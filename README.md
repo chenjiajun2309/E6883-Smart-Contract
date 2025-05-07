@@ -72,10 +72,11 @@ jupyter lab notebooks/Exploration.ipynb
 
 ## Contributors
 
-| Name                 | UNI        | Role                            |
-| -------------------- | ---------- | ------------------------------- |
-| Jiajun Chen          | **jc6397** | Data pipeline & LLM integration |
-| *Add teammates here* |            |                                 |
+| Name        | UNI        | Role                            |
+|-------------|------------| ------------------------------- |
+| Jiajun Chen | **jc6397** | Data pipeline & LLM integration |
+| Jiawei Meng | **jm5876** |                                 |
+| Ziyang Lin  | **zl3477** |                                 |
 
 ---
 
