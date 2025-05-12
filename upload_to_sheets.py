@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """
 upload_to_sheets.py
 
@@ -7,13 +6,12 @@ Uploads a CSV to Google Sheets.
 Usage:
     python upload_to_sheets.py data.csv
 """
-
 import os
 import argparse
 import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from df2gspread import df2gspread as d2g
+from gspread_dataframe import set_with_dataframe
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload CSV to Google Sheets")
@@ -31,13 +29,12 @@ def parse_args():
         help="Path to credentials JSON"
     )
     parser.add_argument(
-        "--work-dir", help="Change to this directory before running"
+        "--work-dir", help="Directory to switch to before running"
     )
     return parser.parse_args()
 
 def main():
     args = parse_args()
-
     if args.work_dir:
         os.chdir(args.work_dir)
 
@@ -66,20 +63,13 @@ def main():
         pass
 
     rows, cols = df.shape
-    sheet.add_worksheet(
+    ws = sheet.add_worksheet(
         title=args.worksheet_name,
         rows=str(rows + 1),
         cols=str(cols)
     )
 
-    d2g.upload(
-        df,
-        sheet.id,
-        wks_name=args.worksheet_name,
-        credentials=creds,
-        row_names=False
-    )
-
+    set_with_dataframe(ws, df)
     print("Upload complete. Spreadsheet ID:", sheet.id)
 
 if __name__ == "__main__":
