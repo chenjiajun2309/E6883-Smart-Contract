@@ -1,0 +1,41 @@
+name: Auto‐update LooksRare Sheet
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # 每小时整点运行一次
+
+jobs:
+  update-sheet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install --no-cache-dir requests pandas web3 gspread oauth2client gspread-dataframe
+
+      - name: Write Google credentials
+        run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials.json
+
+      - name: Fetch on‐chain data
+        run: python fetch_sales.py
+
+      - name: Upload to Google Sheets
+        run: python upload_to_sheets.py looksrare_takerAsks.csv --credentials credentials.json
+
+      - name: Commit CSV back
+        run: |
+          git config user.name 'github-actions'
+          git config user.email 'actions@github.com'
+          git add looksrare_takerAsks.csv
+          git commit -m 'chore: hourly update CSV' || echo "No changes"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
