@@ -57,7 +57,7 @@ def main():
         sheet = client.create(args.sheet_name)
 
     # share to your personal Google account
-    YOUR_EMAIL = 'youremail@gmail.com'
+    YOUR_EMAIL = 'jc6397@columbia.edu'
     sheet.share(YOUR_EMAIL, perm_type='user', role='writer')
     print(f"Shared spreadsheet with {YOUR_EMAIL}")
 
