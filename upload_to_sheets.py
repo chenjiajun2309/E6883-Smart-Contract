@@ -55,6 +55,10 @@ def main():
         sheet = client.open(args.sheet_name)
     except gspread.SpreadsheetNotFound:
         sheet = client.create(args.sheet_name)
+    # share to your personal Google account
+    YOUR_EMAIL = 'youremail@gmail.com'
+    sheet.share(YOUR_EMAIL, perm_type='user', role='writer')
+    print(f"Shared spreadsheet with {YOUR_EMAIL}")
 
     try:
         ws = sheet.worksheet(args.worksheet_name)
